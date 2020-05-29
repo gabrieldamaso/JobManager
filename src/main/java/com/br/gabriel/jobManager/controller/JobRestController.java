@@ -26,16 +26,14 @@ public class JobRestController {
 	}
 	
 	@GetMapping(value = "/teste", produces = "application/json")
-    public Job getJob() {
+    public List<List<Job>> getJob() {
 		List<Job> listaDeJobs = new ArrayList<Job>();
 		
-		 listaDeJobs.add(Job.builder().id(1).tempoEstimado(2).descricao("descricao").dataMaximaDeConclusao(LocalDateTime.now().minusDays(1)).build());
-		 listaDeJobs.add(Job.builder().id(2).tempoEstimado(4).descricao("descricao2").dataMaximaDeConclusao(LocalDateTime.now().plusHours(4)).build());
-		 listaDeJobs.add(Job.builder().id(3).tempoEstimado(6).descricao("descricao3").dataMaximaDeConclusao(LocalDateTime.now().minusHours(3)).build());
-		 
-		 organizadorDeJobs.criarListaPriorizada(listaDeJobs);
+		listaDeJobs.add(Job.builder().id(1).tempoEstimado(2).descricao("descricao").dataMaximaDeConclusao(LocalDateTime.now().minusDays(1)).build());
+		listaDeJobs.add(Job.builder().id(2).tempoEstimado(4).descricao("descricao2").dataMaximaDeConclusao(LocalDateTime.now().plusHours(4)).build());
+		listaDeJobs.add(Job.builder().id(3).tempoEstimado(6).descricao("descricao3").dataMaximaDeConclusao(LocalDateTime.now().minusHours(3)).build());
 		
-        return null;
+        return organizadorDeJobs.gerarProximasListasDeExecucao(listaDeJobs);
     }
 
 }

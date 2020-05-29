@@ -15,7 +15,7 @@ public class OrganizadorDeJobs {
 	List<List<Job>> filaDeExecucao = new ArrayList<List<Job>>();
 	List<Job> listaNaoPriorizada = new ArrayList<Job>();
 	
-	public void gerarProximasListasDeExecucao(List<Job> listaDeJobs) {
+	public List<List<Job>> gerarProximasListasDeExecucao(List<Job> listaDeJobs) {
 		
 		List<Job> listaPriorizada = criarListaPriorizada(listaDeJobs);
 		adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada);
@@ -24,7 +24,7 @@ public class OrganizadorDeJobs {
 			gerarProximasListasDeExecucao(listaNaoPriorizada);
 		}
 		
-		executarFilaDeJobs();
+		return buscarFilaDeExecucao();
 	}
 		
 	public List<Job> criarListaPriorizada(List<Job> listaDeJobs){
@@ -52,9 +52,5 @@ public class OrganizadorDeJobs {
 		return Collections.unmodifiableList(filaDeExecucao) ;
 	} 
 	
-	private void executarFilaDeJobs() {
-		for (List<Job> list : filaDeExecucao) {
-			
-		}
-	}
+	
 }
