@@ -14,16 +14,16 @@ import com.br.gabriel.jobManager.service.TaskOrganizer;
 @RestController
 @RequestMapping("job")
 public class JobRestController {
-	
+
 	private final TaskOrganizer taskOrganizer;
-	
-	 public JobRestController(final TaskOrganizer organizadorDeJobs) {
+
+	public JobRestController(final TaskOrganizer organizadorDeJobs) {
 		this.taskOrganizer = organizadorDeJobs;
 	}
-	
+
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<List<Job>> postJobs(@RequestBody List<Job> jobs) {
-		return taskOrganizer.generateNextExecutionLists(jobs); 
-    }
+	public List<List<Job>> postJobs(@RequestBody List<Job> jobs) {
+		return taskOrganizer.generateNextExecutionLists(jobs);
+	}
 
 }
