@@ -94,6 +94,7 @@ class TaskOrganizerTest {
 						.now()
 						.minusDays(1))
 				.build();
+		
 		job2 = Job.builder()
 				.id(2)
 				.tempoEstimado(4)
@@ -102,6 +103,7 @@ class TaskOrganizerTest {
 						.now()
 						.plusHours(4))
 				.build();
+		
 		job3 = Job.builder()
 				.id(3)
 				.tempoEstimado(6)

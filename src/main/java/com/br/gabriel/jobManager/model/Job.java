@@ -2,6 +2,10 @@ package com.br.gabriel.jobManager.model;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +23,9 @@ public class Job {
 	private String descricao;
 	@NonNull
 	private LocalDateTime dataMaximaDeConclusao;
+	@Min(value = 1, message = "o tempo nao pode ser menor do que 1h")
+    @Max(value = 7, message = "o tempo nao pode ser menor do que 1h")
+	@Positive
 	private int tempoEstimado;
 	
 
