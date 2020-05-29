@@ -1,7 +1,6 @@
 package com.br.gabriel.jobManager.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -12,22 +11,25 @@ import com.br.gabriel.jobManager.model.Job;
 @Service
 public class OrganizadorDeJobs {
 	
-	List<List<Job>> filaDeExecucao = new ArrayList<List<Job>>();
-	List<Job> listaNaoPriorizada = new ArrayList<Job>();
-	
 	public List<List<Job>> gerarProximasListasDeExecucao(List<Job> listaDeJobs) {
+		List<List<Job>> filaDeExecucao = new ArrayList<List<Job>>();
+		boolean firstTime = true;
+		List<Job> listaPriorizada = new ArrayList<Job>();
 		
-		List<Job> listaPriorizada = criarListaPriorizada(listaDeJobs);
-		adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada);
-		
-		while(!listaNaoPriorizada.isEmpty()) {
-			gerarProximasListasDeExecucao(listaNaoPriorizada);
+		while(firstTime || !buscarItensNaoPriorizados(listaPriorizada,listaDeJobs).isEmpty()) {
+			listaPriorizada = criarListaPriorizada(buscarItensNaoPriorizados(listaPriorizada,listaDeJobs));
+			adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada,filaDeExecucao);
+			firstTime = false;
 		}
 		
-		
-		return executarJobs();
+		return filaDeExecucao;
 	}
 		
+	private List<Job> buscarItensNaoPriorizados(List<Job> listaPriorizada, List<Job> listaDeJobs) {
+		listaDeJobs.removeAll(listaPriorizada);
+		 return listaDeJobs; 
+	}
+
 	public List<Job> criarListaPriorizada(List<Job> listaDeJobs){
 		List<Job> listaPriorizada = new ArrayList<Job>();
 		listaDeJobs.sort(Comparator.comparing(Job::getDataMaximaDeConclusao));
@@ -45,19 +47,9 @@ public class OrganizadorDeJobs {
 	}
 
 		
-	public void adicionarJobsPriorizadosNaFilaDeExecucao(List<Job> listaDeJobsPriorizada) {
+	public void adicionarJobsPriorizadosNaFilaDeExecucao(List<Job> listaDeJobsPriorizada, List<List<Job>> filaDeExecucao) {
 		filaDeExecucao.add(listaDeJobsPriorizada);
 	}
 	
-	public List<List<Job>> buscarFilaDeExecucao(){
-		return Collections.unmodifiableList(filaDeExecucao) ;
-	} 
 	
-	public List<List<Job>> executarJobs(){
-		try {
-			return buscarFilaDeExecucao();
-		}finally {
-			filaDeExecucao = new ArrayList<List<Job>>();
-		}
-	} 
 }

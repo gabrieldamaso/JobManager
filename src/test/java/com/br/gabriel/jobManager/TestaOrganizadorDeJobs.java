@@ -53,27 +53,26 @@ class TestaOrganizadorDeJobs {
 	
 	@Test
 	public void criarListaPriorizada(){
+		List<Job> listaDeTeste = List.of(job1,job3);
 		 
-		 List<Job> listaDeTeste = List.of(job1,job3);
+		listaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs1);
 		 
-		 listaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs1);
-		 
-		 MatcherAssert.assertThat(listaPriorizada, CoreMatchers.is(listaDeTeste));
+		MatcherAssert.assertThat(listaPriorizada, CoreMatchers.is(listaDeTeste));
 	}
 	
 	@Test
 	public void adicionarJobsPriorizadosNaFilaDeExecucao(){
+		List<List<Job>> filaDeExecucao = new ArrayList<List<Job>>();
 		
 		listaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs1);
 		
-		organizadorDeJobs.adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada);
+		organizadorDeJobs.adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada, filaDeExecucao);
 		
 		listaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs2);
 
-		organizadorDeJobs.adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada);
+		organizadorDeJobs.adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada, filaDeExecucao);
 		
-		List<List<Job>> buscarFilaDeExecucao = organizadorDeJobs.buscarFilaDeExecucao();
-		
+	
 		List<Job> listaDeTeste1 = List.of(job1,job3);
 		
 		List<Job> listaDeTeste2 = List.of(job4,job5);
@@ -83,7 +82,7 @@ class TestaOrganizadorDeJobs {
 		listaTesteFinal.add(listaDeTeste1);
 		listaTesteFinal.add(listaDeTeste2);
 		
-		MatcherAssert.assertThat(buscarFilaDeExecucao, CoreMatchers.is(listaTesteFinal));
+		MatcherAssert.assertThat(filaDeExecucao, CoreMatchers.is(listaTesteFinal));
 		 
 	}
 	
