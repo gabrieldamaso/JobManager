@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.gabriel.jobManager.model.Job;
-import com.br.gabriel.jobManager.service.OrganizadorDeJobs;
+import com.br.gabriel.jobManager.service.TaskOrganizer;
 
 @RestController
 @RequestMapping("job")
 public class JobRestController {
 	
 	@Autowired
-	OrganizadorDeJobs organizadorDeJobs;
+	TaskOrganizer organizadorDeJobs;
 	
 	@PostMapping(value = "/", produces = "application/json")
     public List<List<Job>> postJobs(@RequestBody List<Job> jobs) {
-		return organizadorDeJobs.gerarProximasListasDeExecucao(jobs); 
+		return organizadorDeJobs.generateNextExecutionLists(jobs); 
     }
 
 }

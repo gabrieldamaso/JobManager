@@ -12,16 +12,16 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.br.gabriel.jobManager.model.Job;
-import com.br.gabriel.jobManager.service.OrganizadorDeJobs;
+import com.br.gabriel.jobManager.service.TaskOrganizer;
 
 
 @RunWith(SpringRunner.class)
-class TestaOrganizadorDeJobs {
+class TaskOrganizerTest {
 	
-	OrganizadorDeJobs organizadorDeJobs;
-	List<Job> listaPriorizada;
-	List<Job> listaDeJobs1;
-	List<Job> listaDeJobs2;
+	TaskOrganizer jobsOrganizer;
+	List<Job> prioritizedList;
+	List<Job> jobsList1;
+	List<Job> jobsList2;
 	Job job1 ;
 	Job job2 ;
 	Job job3 ;
@@ -33,61 +33,59 @@ class TestaOrganizadorDeJobs {
 	@BeforeEach
 	public void init() {
 		
-		organizadorDeJobs = new OrganizadorDeJobs();
-		listaPriorizada = new ArrayList<Job>();
-		criarJobs();
-		listaDeJobs1 = new ArrayList<Job>();
-		listaDeJobs2 = new ArrayList<Job>();
+		jobsOrganizer = new TaskOrganizer();
+		prioritizedList = new ArrayList<Job>();
+		createJobs();
+		jobsList1 = new ArrayList<Job>();
+		jobsList2 = new ArrayList<Job>();
 		
-		listaDeJobs1.add(job1);
-		listaDeJobs1.add(job2);
-		listaDeJobs1.add(job3);
+		jobsList1.add(job1);
+		jobsList1.add(job2);
+		jobsList1.add(job3);
 		
-		listaDeJobs2.add(job4);
-		listaDeJobs2.add(job5);
-		listaDeJobs2.add(job6);
+		jobsList2.add(job4);
+		jobsList2.add(job5);
+		jobsList2.add(job6);
 
-	}
-
-
-	
-	@Test
-	public void criarListaPriorizada(){
-		List<Job> listaDeTeste = List.of(job1,job3);
-		 
-		listaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs1);
-		 
-		MatcherAssert.assertThat(listaPriorizada, CoreMatchers.is(listaDeTeste));
 	}
 	
 	@Test
-	public void adicionarJobsPriorizadosNaFilaDeExecucao(){
-		List<List<Job>> filaDeExecucao = new ArrayList<List<Job>>();
+	public void createPriorizedList(){
+		List<Job> testList = List.of(job1,job3);
+		 
+		prioritizedList = jobsOrganizer.createPriorizedList(jobsList1);
+		 
+		MatcherAssert.assertThat(prioritizedList, CoreMatchers.is(testList));
+	}
+	
+	@Test
+	public void addPriorityJobsInExecutionList(){
+		List<List<Job>> executionList = new ArrayList<List<Job>>();
 		
-		listaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs1);
+		prioritizedList = jobsOrganizer.createPriorizedList(jobsList1);
 		
-		organizadorDeJobs.adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada, filaDeExecucao);
+		jobsOrganizer.addPriorityJobsInExecutionList(prioritizedList, executionList);
 		
-		listaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs2);
+		prioritizedList = jobsOrganizer.createPriorizedList(jobsList2);
 
-		organizadorDeJobs.adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada, filaDeExecucao);
+		jobsOrganizer.addPriorityJobsInExecutionList(prioritizedList, executionList);
 		
 	
-		List<Job> listaDeTeste1 = List.of(job1,job3);
+		List<Job> testList1 = List.of(job1,job3);
 		
-		List<Job> listaDeTeste2 = List.of(job4,job5);
+		List<Job> testList2 = List.of(job4,job5);
 		
-		List<List<Job>> listaTesteFinal = new ArrayList<List<Job>>();
+		List<List<Job>> finalTestList = new ArrayList<List<Job>>();
 		
-		listaTesteFinal.add(listaDeTeste1);
-		listaTesteFinal.add(listaDeTeste2);
+		finalTestList.add(testList1);
+		finalTestList.add(testList2);
 		
-		MatcherAssert.assertThat(filaDeExecucao, CoreMatchers.is(listaTesteFinal));
+		MatcherAssert.assertThat(executionList, CoreMatchers.is(finalTestList));
 		 
 	}
 	
 	
-	private void criarJobs() {
+	private void createJobs() {
 		job1 = Job.builder()
 				.id(1)
 				.tempoEstimado(2)

@@ -2,13 +2,15 @@ package com.br.gabriel.jobManager.model;
 
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
 
 
-@Data
 @Builder
+@AllArgsConstructor
+@Getter
 public class Job {
 
 	
