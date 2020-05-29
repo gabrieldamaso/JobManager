@@ -24,7 +24,8 @@ public class OrganizadorDeJobs {
 			gerarProximasListasDeExecucao(listaNaoPriorizada);
 		}
 		
-		return buscarFilaDeExecucao();
+		
+		return executarJobs();
 	}
 		
 	public List<Job> criarListaPriorizada(List<Job> listaDeJobs){
@@ -52,5 +53,11 @@ public class OrganizadorDeJobs {
 		return Collections.unmodifiableList(filaDeExecucao) ;
 	} 
 	
-	
+	public List<List<Job>> executarJobs(){
+		try {
+			return buscarFilaDeExecucao();
+		}finally {
+			filaDeExecucao = new ArrayList<List<Job>>();
+		}
+	} 
 }
