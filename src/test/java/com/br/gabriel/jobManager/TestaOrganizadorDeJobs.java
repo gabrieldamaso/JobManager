@@ -6,13 +6,9 @@ import java.util.List;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.br.gabriel.jobManager.model.Job;
@@ -21,28 +17,129 @@ import com.br.gabriel.jobManager.service.OrganizadorDeJobs;
 
 @RunWith(SpringRunner.class)
 class TestaOrganizadorDeJobs {
-
-	@Test
-	public void testaCriarListaPriorizada(){
+	
+	OrganizadorDeJobs organizadorDeJobs;
+	List<Job> listaPriorizada;
+	List<Job> listaDeJobs1;
+	List<Job> listaDeJobs2;
+	Job job1 ;
+	Job job2 ;
+	Job job3 ;
+	Job job4 ;
+	Job job5 ;
+	Job job6 ;
+	 
+	
+	@BeforeEach
+	public void init() {
 		
-		 List<Job> listaDeJobs = new ArrayList<Job>();
-		 
-		 Job job1 = Job.builder().id(1).tempoEstimado(2).descricao("descricao").dataMaximaDeConclusao(LocalDateTime.now().minusDays(1)).build();
-		 Job job2 = Job.builder().id(2).tempoEstimado(4).descricao("descricao2").dataMaximaDeConclusao(LocalDateTime.now().plusHours(4)).build();
-		 Job job3 = Job.builder().id(3).tempoEstimado(6).descricao("descricao3").dataMaximaDeConclusao(LocalDateTime.now().minusHours(3)).build();
-		 
-		 listaDeJobs.add(job1);
-		 listaDeJobs.add(job2);
-		 listaDeJobs.add(job3);
+		organizadorDeJobs = new OrganizadorDeJobs();
+		listaPriorizada = new ArrayList<Job>();
+		criarJobs();
+		listaDeJobs1 = new ArrayList<Job>();
+		listaDeJobs2 = new ArrayList<Job>();
+		
+		listaDeJobs1.add(job1);
+		listaDeJobs1.add(job2);
+		listaDeJobs1.add(job3);
+		
+		listaDeJobs2.add(job4);
+		listaDeJobs2.add(job5);
+		listaDeJobs2.add(job6);
+
+	}
+
+
+	
+	@Test
+	public void criarListaPriorizada(){
 		 
 		 List<Job> listaDeTeste = List.of(job1,job3);
 		 
-		 OrganizadorDeJobs organizadorDeJobs = new OrganizadorDeJobs();
+		 listaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs1);
 		 
-		 List<Job> criarListaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs);
+		 MatcherAssert.assertThat(listaPriorizada, CoreMatchers.is(listaDeTeste));
+	}
+	
+	@Test
+	public void adicionarJobsPriorizadosNaFilaDeExecucao(){
+		
+		listaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs1);
+		
+		organizadorDeJobs.adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada);
+		
+		listaPriorizada = organizadorDeJobs.criarListaPriorizada(listaDeJobs2);
+
+		organizadorDeJobs.adicionarJobsPriorizadosNaFilaDeExecucao(listaPriorizada);
+		
+		List<List<Job>> buscarFilaDeExecucao = organizadorDeJobs.buscarFilaDeExecucao();
+		
+		List<Job> listaDeTeste1 = List.of(job1,job3);
+		
+		List<Job> listaDeTeste2 = List.of(job4,job5);
+		
+		List<List<Job>> listaTesteFinal = new ArrayList<List<Job>>();
+		
+		listaTesteFinal.add(listaDeTeste1);
+		listaTesteFinal.add(listaDeTeste2);
+		
+		MatcherAssert.assertThat(buscarFilaDeExecucao, CoreMatchers.is(listaTesteFinal));
 		 
-		 
-		 MatcherAssert.assertThat(criarListaPriorizada, CoreMatchers.is(listaDeTeste));
+	}
+	
+	
+	private void criarJobs() {
+		job1 = Job.builder()
+				.id(1)
+				.tempoEstimado(2)
+				.descricao("descricao")
+				.dataMaximaDeConclusao(LocalDateTime
+						.now()
+						.minusDays(1))
+				.build();
+		job2 = Job.builder()
+				.id(2)
+				.tempoEstimado(4)
+				.descricao("descricao2")
+				.dataMaximaDeConclusao(LocalDateTime
+						.now()
+						.plusHours(4))
+				.build();
+		job3 = Job.builder()
+				.id(3)
+				.tempoEstimado(6)
+				.descricao("descricao3")
+				.dataMaximaDeConclusao(LocalDateTime
+						.now()
+						.minusHours(3))
+				.build();
+		
+		job4 = Job.builder()
+				.id(4)
+				.tempoEstimado(2)
+				.descricao("descricao4")
+				.dataMaximaDeConclusao(LocalDateTime
+						.now()
+						.minusDays(1))
+				.build();
+		
+		job5 = Job.builder()
+				.id(5)
+				.tempoEstimado(2)
+				.descricao("descricao5")
+				.dataMaximaDeConclusao(LocalDateTime
+						.now()
+						.minusHours(4))
+				.build();
+		
+		job6 = Job.builder()
+				.id(6)
+				.tempoEstimado(7)
+				.descricao("descricao6")
+				.dataMaximaDeConclusao(LocalDateTime
+						.now()
+						.plusHours(3))
+				.build();
 	}
 
 }

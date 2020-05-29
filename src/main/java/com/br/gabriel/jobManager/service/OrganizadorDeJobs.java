@@ -1,6 +1,7 @@
 package com.br.gabriel.jobManager.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -46,6 +47,10 @@ public class OrganizadorDeJobs {
 	public void adicionarJobsPriorizadosNaFilaDeExecucao(List<Job> listaDeJobsPriorizada) {
 		filaDeExecucao.add(listaDeJobsPriorizada);
 	}
+	
+	public List<List<Job>> buscarFilaDeExecucao(){
+		return Collections.unmodifiableList(filaDeExecucao) ;
+	} 
 	
 	private void executarFilaDeJobs() {
 		for (List<Job> list : filaDeExecucao) {
