@@ -38,7 +38,7 @@ public class JobRestController {
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<List<Job>> postJobs(@RequestBody @Valid List<Job> jobs) {
+	public List<List<Job>> postJobs(@RequestBody List<@Valid Job> jobs) {
 		return taskOrganizer.generateNextExecutionLists(jobs);
 	}
 

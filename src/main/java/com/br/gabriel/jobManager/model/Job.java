@@ -24,7 +24,7 @@ public class Job {
 	@NonNull
 	private LocalDateTime dataMaximaDeConclusao;
 	@Min(value = 1, message = "o tempo nao pode ser menor do que 1h")
-    @Max(value = 7, message = "o tempo nao pode ser menor do que 1h")
+    @Max(value = 8, message = "o tempo nao pode ser maior do que 8h")
 	@Positive
 	private int tempoEstimado;
 	
